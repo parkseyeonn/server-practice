@@ -1,10 +1,7 @@
 import {gql} from 'apollo-server';
-import GraphQLUpload from 'graphql-upload/GraphQLUpload.js'
 
 export default gql`
-  type Upload {
-    ${GraphQLUpload}
-  }
+  scalar Upload
   type Mutation {
     editProfile (
       name: String

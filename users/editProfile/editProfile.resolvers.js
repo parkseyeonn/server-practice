@@ -3,6 +3,15 @@ import client from '../../client';
 import { protectedResolvers } from '../users.utils';
 
 const resolver = async (_, {name, email, username, password: newPassword, bio, avatar}, {loggedInUSer}) => {
+  let avatarUrl = null;
+  if (avatar) {
+    const {filename, createReadStream } = await avatar;
+    const newFilename = `${loggedInUSer.id}-${Date.now()}-${filename}`;
+    const readStream = createReadStream();
+    const writeStream = createWriteStream(process.cwd() + "/uploads/" + newFilename);
+    readStream.pipe(writeStream);
+    avatarUrl = newFilename;
+  }
   let hashedPassword = null;
   if (newPassword) {
     hashedPassword = bcrypt.hash(newPassword, 10);
@@ -15,7 +24,8 @@ const resolver = async (_, {name, email, username, password: newPassword, bio, a
       username,
       name,
       email,
-      ...(hashedPassword && {password: hashedPassword})
+      ...(hashedPassword && {password: hashedPassword}),
+      ...(avatarUrl && {avatar: avatarUrl}),
     }
   })
   if (updatedUser.id) {
