@@ -1,0 +1,23 @@
+1. graphql-upload - Error: Unknown type "Upload". Did you mean "Float"? 
+  - 버전 낮춤 npm i graphql-upload@^13.0.0
+  - server.js, editProfile.typeDefs.js 파일 수정
+  - server.js
+    import { graphqlUploadExpress } from "graphql-upload";
+    ... 
+    const app = express();
+    app.use(graphqlUploadExpress());
+    server.applyMiddleware({ app });
+  - typeDefs.js
+    export default gql`
+      scalar Upload //추가
+      type Mutation {
+        editProfile (
+          name: String
+          usernmae: String
+          email: String
+          password: String
+          bio: String
+          avatar: Upload
+        ): MutationResult
+      }
+    `;

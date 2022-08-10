@@ -1,0 +1,82 @@
+1. followers
+Relation
+Relation는 Prisma 스키마에서 두 모델 간의 연결입니다. 예를 들어, 한 사용자가 여러 블로그 게시물을 가질 수 있기 때문에 사용자와 게시물 사이에는 일대다 관계가 있습니다.
+https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#relation
+https://www.prisma.io/docs/concepts/components/prisma-schema/relations#the-relation-attribute
+
+@relation
+관계에 대한 메타 정보를 정의합니다.
+```
+@relation(name: "UserOnPost", references: [id]) // name은 생략 가능
+@relation("UserOnPost", references: [id])
+```
+name: 관계의 이름을 정의
+fields: 현재 모델의 필드 목록
+references: 관계의 반대편에 있는 모델의 필드 목록
+
+Self-relations
+관계 필드는 자체 모델을 참조할 수도 있습니다. 이 경우 관계를 자기 관계라고 합니다. 자체 관계는 1-1, 1-n 및 m-n과 같은 모든 카디널리티일 수 있습니다.
+
+일대일 자기 관계를 생성하려면:
+1. 관계의 양쪽은 동일한 이름(이 경우 BlogOwnerHistory)을 공유하는 @relation 속성을 정의해야 합니다.
+2. 하나의 관계 필드는 완전히 주석 처리되어야 합니다. 이 예에서 후속 필드는 필드와 참조 인수를 모두 정의합니다.
+3. 하나의 관계 필드는 외래 키로 뒷받침되어야 합니다. 계승자 필드는 id 필드의 값을 참조하는 successorId 외래 키로 뒷받침됩니다.
+https://www.prisma.io/docs/concepts/components/prisma-schema/relations/self-relations
+
+Implicit many-to-many relation should not have references argument defined. Either remove it, or change the relation to one-to-many
+: 다대다 관계는 references를 표시x
+followers User[] @relation("FollowRelation")
+following User[] @relation("FollowRelation")
+
+2. pagination
+Pagination
+Prisma Client는 offset pagination과 cursor-based pagination을 모두 지원합니다.
+
+Offset pagination
+Offset pagination은 건너뛰기 및 가져오기를 사용하여 특정 수의 결과를 건너뛰고 제한된 범위를 선택합니다.
+https://www.prisma.io/docs/concepts/components/prisma-client/pagination
+
+some
+하나 이상의("some") 관련 레코드가 필터링 기준과 일치하는 모든 레코드를 반환합니다.
+https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#some
+
+every
+모든("every") 관련 레코드가 필터링 기준과 일치하는 모든 레코드를 반환합니다.
+
+none
+0개의 관련 레코드가 필터링 기준과 일치하는 모든 레코드를 반환합니다.
+
+Fluent API
+Fluent API를 사용하면 함수 호출을 통해 모델의 relation을 유창하게 탐색할 수 있습니다.
+ex) followers(), following()
+https://www.prisma.io/docs/concepts/components/prisma-client/relation-queries#fluent-api
+
+count
+count를 사용하여 레코드 또는 null이 아닌 필드 값의 수를 계산합니다.
+ex) const userCount = await prisma.user.count()
+https://www.prisma.io/docs/concepts/components/prisma-client/aggregation-grouping-summarizing#count
+
+select (Select specific fields: 특정 필드 선택)
+모든 필드 대신 필드의 제한된 하위 집합을 반환하려면 select를 사용하십시오.
+(select를 중첩해서 사용할 수도 있고 include와 함께 사용할 수도 있다.)
+```
+const getUser: object | null = await prisma.user.findUnique({
+where: {
+id: 22,
+},
+select: {
+email: true, // email과 name만 반환됨
+name: true,
+},
+})
+```
+https://www.prisma.io/docs/concepts/components/prisma-client/select-fields#select-specific-fields
+
+Pagination
+https://www.prisma.io/docs/concepts/components/prisma-client/pagination
+
+Offset pagination
+보여줄 데이터가 적거나 게시물을 페이지를 통해 이동하려고 할 때, 적합
+
+Cursor-based pagination
+보여줄 데이터가 많거나 무한 스크롤 등으로 데이터를 보여줄 때, 적합
