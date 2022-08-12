@@ -80,3 +80,16 @@ Offset pagination
 
 Cursor-based pagination
 보여줄 데이터가 많거나 무한 스크롤 등으로 데이터를 보여줄 때, 적합
+
+Computed Fields
+"데이터베이스에는 존재하지 않지만", "GraphQL schema에는 존재하는" 필드들을 말한다.
+Computed Fields는 매번 Request를 받을 때마다 새롭게 계산되서 보여지는 field들을 말한다.
+
+Resolver arguments
+resolver 함수에는 parent, args, context, and info의 네 가지 인수가 전달됩니다(순서대로).
+parent 대신 parent 유형의 이름이나 source를 사용하는 것도 일반적입니다.
+
+parent
+이 field(ex: totalFollowing, totalFollowers)의 parent(방금 데이터베이스에서 찾아온 totalFollowing, totalFollowers가 없는 User)를 반환합니다.
+parent가 없는 최상위 field resolver(예: Query field)의 경우 이 값은 Apollo Server의 생성자에 전달된 rootValue 함수에서 가져옵니다.
+https://www.apollographql.com/docs/apollo-server/data/resolvers/#resolver-arguments
