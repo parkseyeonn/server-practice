@@ -93,3 +93,23 @@ parent
 이 field(ex: totalFollowing, totalFollowers)의 parent(방금 데이터베이스에서 찾아온 totalFollowing, totalFollowers가 없는 User)를 반환합니다.
 parent가 없는 최상위 field resolver(예: Query field)의 경우 이 값은 Apollo Server의 생성자에 전달된 rootValue 함수에서 가져옵니다.
 https://www.apollographql.com/docs/apollo-server/data/resolvers/#resolver-arguments
+
+
+Many-to-many relations
+
+다대다(m-n) 관계는 관계의 한쪽에 있는 0개 이상의 레코드가 다른 쪽의 0개 이상의 레코드에 연결될 수 있는 관계를 나타냅니다.
+```
+model Post {
+id Int @id @default(autoincrement())
+title String
+categories CategoriesOnPosts[]
+}
+
+model Category {
+id Int @id @default(autoincrement())
+name String
+posts CategoriesOnPosts[]
+}
+```
+https://www.prisma.io/docs/concepts/components/prisma-schema/relations/many-to-many-relations
+
