@@ -1,0 +1,15 @@
+- response 
+query와 ok, error를 한번에 정의할 방법??
+- photo의 toggleLike의 아래 코드는 어떻게 작동하는지?
+const likeWhere = {
+  photoId_userId: {
+    userId: loggedInUser.id,
+    photoId: id
+  }
+};
+- typeDefs에서 gql을 export하는 이유
+- resolver에서 client란? prisma client로 자동으로 타입에 맞춰서 쿼리 빌딩을 도와준다.
+- message만 typedefs에서 user를 찾는 이유가 뭘까? message의 room은 따로 리턴하는게 없음.
+- postgresql 사용 방법 정리 -> 완료
+- ts update 방법 study.txt에 정리 -> 완료
+- 
