@@ -18,13 +18,14 @@ export const getUser = async (token) => {
 };
 
 export const protectedResolvers = (resolver) => (root, args, context, info) => {
+  console.log(info.operation)
   if(!context.loggedInUser) {
     if (info.operation.operation === "query") {
       return null;
     }
     return {
       ok: false,
-      message: 'please log in.'
+      error: 'please log in.'
     }
   }
   return resolver(root, args, context, info);
