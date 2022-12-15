@@ -36,6 +36,12 @@ export default {
           }
         }
       }));
-    }
+    },
+    photos: ({id}, {page}) => client.user.findUnique({
+      where: {id}
+    }).photos({
+      take: 5,
+      skip: 5 * (page - 1)
+    }),
   }
 }

@@ -1,7 +1,7 @@
 import { PrismaClient, User } from "@prisma/client";
 
 type Context = {
-  loggedInUSer?: User
+  loggedInUser?: User
   client: PrismaClient
 }
 
@@ -15,5 +15,13 @@ export type Resolver = (
 export type Resolvers = {
   [key: string]: {
     [key: string]: Resolver
+  }
+}
+
+export type SubscriptionResolvers = {
+  [key: string]: {
+    [key: string]: {
+      subscribe: Resolver
+    }
   }
 }

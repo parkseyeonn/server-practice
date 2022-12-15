@@ -3,7 +3,7 @@ import { protectedResolvers } from "../users.utils";
 
 export default {
   Mutation: {
-    unfollowUser: protectedResolvers(async (_, {nickname}, {loggedInUSer}) => {
+    unfollowUser: protectedResolvers(async (_, {nickname}, {loggedInUser}) => {
       const ok = await client.user.findUnique({where: {nickname}});
       
       if (!ok) {
@@ -14,7 +14,7 @@ export default {
       }
 
       const isFollowing = await client.user.count({
-        where: {id: loggedInUSer.id},
+        where: {id: loggedInUser.id},
         // todo fix
         // following: {some: {nickname}}
       });
@@ -28,7 +28,7 @@ export default {
 
       await client.user.update({
         where: {
-          id: loggedInUSer.id,
+          id: loggedInUser.id,
         },
         data: {
           following: {

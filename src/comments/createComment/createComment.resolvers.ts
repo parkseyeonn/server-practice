@@ -19,23 +19,24 @@ const resolvers: Resolvers = {
             error: "photo not found"
           }
         }
-        await client.comment.create({
+        const comment = await client.comment.create({
           data: {
             payload,
-          },
-          photo: {
-            connect: {
-              id: photo.id
+            photo: {
+              connect: {
+                id: photo.id
+              }
+            },
+            user: {
+              connect: {
+                id: loggedInUser.id
+              }
             }
           },
-          user: {
-            connect: {
-              id: loggedInUser.id
-            }
-          }
         });
         return {
           ok: true,
+          id: comment.id
         }
       }
     )

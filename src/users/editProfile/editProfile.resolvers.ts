@@ -2,11 +2,11 @@ import bcrypt from 'bcrypt';
 import client from '../../client';
 import { protectedResolvers } from '../users.utils';
 
-const resolver = async (_, {name, email, nickname, password: newPassword, bio, avatar}, {loggedInUSer}) => {
+const resolver = async (_, {name, email, nickname, password: newPassword, bio, avatar}, {loggedInUser}) => {
   let avatarUrl = null;
   if (avatar) {
     const {filename, createReadStream } = await avatar;
-    const newFilename = `${loggedInUSer.id}-${Date.now()}-${filename}`;
+    const newFilename = `${loggedInUser.id}-${Date.now()}-${filename}`;
     const readStream = createReadStream();
     //todo createWriteStream
     // const writeStream = createWriteStream(process.cwd() + "/uploads/" + newFilename);
@@ -19,7 +19,7 @@ const resolver = async (_, {name, email, nickname, password: newPassword, bio, a
   }
   const updatedUser = await client.user.update({
     where: {
-      id: loggedInUSer.id
+      id: loggedInUser.id
     }, 
     data: {
       nickname,

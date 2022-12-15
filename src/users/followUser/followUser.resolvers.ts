@@ -3,7 +3,7 @@ import { protectedResolvers } from "../users.utils";
 
 export default {
   Mutation: {
-    followUser: protectedResolvers(async (_, {nickname}, {loggedInUSer}) => {
+    followUser: protectedResolvers(async (_, {nickname}, {loggedInUser}) => {
       const ok = await client.user.findUnique({where: {nickname}});
       
       if (!ok) {
@@ -15,7 +15,7 @@ export default {
 
       await client.user.update({
         where: {
-          id: loggedInUSer.id,
+          id: loggedInUser.id,
         },
         data: {
           following: {
